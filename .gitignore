@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+*.pth
+*.pkl
+*.pt
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+
+# Build
+dist/
+build/
+*.log
+
+# Temporary / experimental
+test*.jpg
+test*.png
+215046_*.jpg
+eval_output_images/
+eval_results/
+modal_infer.py
+download_sample.py
+
+# Large data (keep source code only)
+data/
+# Python 
+__pycache__/ 
+*.pyc 
+*.pth 
+.venv/ 
+ 
+# OS 
+.DS_Store 
+Thumbs.db 
+ 
+# Temp 
+test*.jpg 
+eval_output/ 
+ 
+# Large data (khong commit) 
+data/ 
