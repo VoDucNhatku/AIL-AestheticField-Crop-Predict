@@ -18,7 +18,7 @@ Bài toán được hình thức hóa là tìm:
 
 $$\mathbf{P}^* = \arg\max_{\mathbf{P}}\; \mathrm{score}(\mathbf{P})$$
 
-trên không gian tư thế máy ảnh liên tục, với $\mathrm{score}(\mathbf{P})$ là điểm thẩm mỹ (aesthetic score) dự đoán tại tư thế $\mathbf{P}$.
+trên không gian tư thế máy ảnh liên tục, với $`\mathrm{score}(\mathbf{P})`$ là điểm thẩm mỹ (aesthetic score) dự đoán tại tư thế $`\mathbf{P}`$.
 
 ---
 
@@ -50,7 +50,7 @@ Bài báo liệt kê ba đóng góp chính:
 
 Hệ thống gồm hai thành phần chính:
 
-**Bước 1 — Học 3D Aesthetic Field:** Chắt lọc (distill) tri thức thẩm mỹ từ một mô hình thẩm mỹ 2D được huấn luyện sẵn (teacher model VEN) vào một mạng **feedforward 3D Gaussian Splatting**. Với N ảnh đầu vào thưa thớt, mạng này dự đoán các 3D Gaussian mang đặc trưng thẩm mỹ $\mathbf{f}_{aes}$ cho mỗi Gaussian, thay vì chỉ màu sắc. Điều này tạo ra một "trường" liên tục cho phép suy luận điểm thẩm mỹ tại bất kỳ góc nhìn nào trong không gian 3D.
+**Bước 1 — Học 3D Aesthetic Field:** Chắt lọc (distill) tri thức thẩm mỹ từ một mô hình thẩm mỹ 2D được huấn luyện sẵn (teacher model VEN) vào một mạng **feedforward 3D Gaussian Splatting**. Với N ảnh đầu vào thưa thớt, mạng này dự đoán các 3D Gaussian mang đặc trưng thẩm mỹ $`\mathbf{f}_{aes}`$ cho mỗi Gaussian, thay vì chỉ màu sắc. Điều này tạo ra một "trường" liên tục cho phép suy luận điểm thẩm mỹ tại bất kỳ góc nhìn nào trong không gian 3D.
 
 **Bước 2 — Tìm kiếm góc nhìn hai giai đoạn:** (a) Lấy mẫu thô dọc theo quỹ đạo nội suy giữa các ảnh đầu vào, chọn K ứng viên có điểm cao nhất; (b) Tinh chỉnh từng ứng viên bằng gradient ascent trên aesthetic score để tối ưu tư thế máy ảnh cục bộ.
 

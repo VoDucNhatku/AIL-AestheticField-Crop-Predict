@@ -17,13 +17,13 @@
 
 **Hạn chế quan sát thêm qua phân tích:**
 
-4. **Bài toán dataset nhân tạo (synthetic dataset construction):** Dataset unbounded được xây dựng từ GAICD/CPC bằng cách lấy mẫu $\mathbf{v}_{init}$ từ ảnh toàn cảnh theo ràng buộc tỉ lệ $\alpha = 0.7$ và $\beta = 0.7$. Cách tạo dữ liệu này mô phỏng không hoàn hảo tình huống thực tế: người dùng thực không nhất thiết luôn giữ chủ thể trong khung hay dùng tỉ lệ 4:3.
+4. **Bài toán dataset nhân tạo (synthetic dataset construction):** Dataset unbounded được xây dựng từ GAICD/CPC bằng cách lấy mẫu $`\mathbf{v}_{init}`$ từ ảnh toàn cảnh theo ràng buộc tỉ lệ $`\alpha = 0.7`$ và $`\beta = 0.7`$. Cách tạo dữ liệu này mô phỏng không hoàn hảo tình huống thực tế: người dùng thực không nhất thiết luôn giữ chủ thể trong khung hay dùng tỉ lệ 4:3.
 
 5. **FEM chỉ hoạt động tốt khi vùng ngoài biên có tính nhất quán ngữ nghĩa cao:** Mô hình giả định rằng đặc trưng ngoài biên có thể được ngoại suy từ đặc trưng trong biên qua cross-attention. Điều này không đúng khi cảnh thay đổi đột ngột (abrupt scene change) tại biên ảnh.
 
 6. **Hội tụ đa bước chưa được phân tích sâu:** Thực nghiệm multi-step chỉ thực hiện trên 83 ảnh lớn từ GAICD, tách biệt với bảng so sánh chính, và chỉ chạy tối đa 3 bước — điều kiện hội tụ thực tế chưa được xác định chính thức.
 
-7. **Phụ thuộc vào chất lượng backbone CNN (backbone dependency):** Toàn bộ luồng trích xuất $\mathcal{Z}_{vis}$ phụ thuộc vào ImageNet-pretrained CNN. Với các cảnh ảnh đặc thù (ảnh y tế, ảnh thiên văn, ảnh siêu cận cảnh), FEM có thể ngoại suy sai do distribution shift.
+7. **Phụ thuộc vào chất lượng backbone CNN (backbone dependency):** Toàn bộ luồng trích xuất $`\mathcal{Z}_{vis}`$ phụ thuộc vào ImageNet-pretrained CNN. Với các cảnh ảnh đặc thù (ảnh y tế, ảnh thiên văn, ảnh siêu cận cảnh), FEM có thể ngoại suy sai do distribution shift.
 
 8. **Thiếu đánh giá người dùng (no user study):** Mọi đánh giá đều dựa trên metric tự động (IoU, Disp, Acc) với ground truth từ dataset. Không có user study để xác nhận rằng khuyến nghị của UNIC thực sự hữu ích cho người dùng thực tế khi chụp ảnh.
 
@@ -92,7 +92,7 @@ Hiệu quả của FEM được đo qua IoU/Disp với ground truth, nhưng chư
 | O3 | **W1** — Khuyến nghị góc nhìn theo thời gian thực | Video composition guidance là use case thực tế cao (livestream, video call, content creation) nhưng hoàn toàn chưa có | Lightweight UNIC variant + temporal consistency loss; điều kiện: latency < 33ms cho 30fps; có thể dùng student-teacher distillation để nén mô hình | 034 (multi-step), 001 (I2V-based composition) |
 | O4 | **G4** — Cá nhân hóa bố cục (personalized composition) | Sở thích bố cục khác nhau theo phong cách nhiếp ảnh (street, portrait, landscape); một mô hình chung không đủ | Fine-tune UNIC với adapter layer trên lịch sử ảnh của từng người dùng; dùng pairwise feedback (ảnh nào đẹp hơn?) để học sở thích — kết nối trực tiếp với 004 (pairwise aesthetic comparison) | 034 (UNIC backbone), 004 (pairwise comparison) |
 | O5 | **G5** — Bố cục ngữ nghĩa (semantic-aware composition) | Rule of thirds, leading lines, và symmetry áp dụng khác nhau tùy loại đối tượng; hiện tại model không phân biệt | Bổ sung object detection + semantic segmentation vào pipeline UNIC; condition FEM và decoder trên loại đối tượng chính (person, landscape, architecture) | 034 (cDETR backbone) |
-| O6 | **W4** — Tích hợp ngôn ngữ tự nhiên | Vision-language interface là xu hướng tất yếu; "shoot the sunset with the couple on the left" là query tự nhiên | Dùng CLIP hoặc LLaVA để encode text intent; cross-attention giữa text embedding và $\mathcal{Z}_{vis}$ để condition FEM và decoder | 034 (cDETR + FEM) |
+| O6 | **W4** — Tích hợp ngôn ngữ tự nhiên | Vision-language interface là xu hướng tất yếu; "shoot the sunset with the couple on the left" là query tự nhiên | Dùng CLIP hoặc LLaVA để encode text intent; cross-attention giữa text embedding và $`\mathcal{Z}_{vis}`$ để condition FEM và decoder | 034 (cDETR + FEM) |
 | O7 | **G6** — Lý thuyết hội tụ multi-step | Không có đảm bảo lý thuyết rằng UNIC hội tụ — quan trọng cho deployment thực tế | Phân tích UNIC như một dynamical system: chứng minh fixed point tồn tại và điều kiện hội tụ; thực nghiệm với nhiều loại cảnh và số bước hơn (> 3) | 034 (Section 4.4 multi-step ablation) |
 | O8 | **G3** — Đa dạng domain dataset | Mô hình train trên ảnh outdoor có thể kém trên indoor, macro, low-light | Xây dựng benchmark đa domain cho unbounded composition: thu thập và annotate ảnh indoor, macro, đêm; đánh giá cross-domain transfer | 034 (dataset construction Section 3.4) |
 

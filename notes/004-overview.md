@@ -45,14 +45,14 @@ Trước bài báo này, ba nhánh trên thường được xử lý bởi các 
 
 ## 4. Phương pháp tổng quát
 
-**Bước 1 — Aesthetic Comparator:** Huấn luyện mạng Siamese (ResNet-50 làm backbone, thêm 4 local residual blocks res5-1 đến res5-4 song song với res5 gốc để khai thác đặc trưng cục bộ) kết hợp với ternary classifier để ước lượng tỉ lệ điểm thẩm mỹ giữa hai ảnh (quantize thành 3 lớp: superior/similar/inferior dùng ngưỡng $\gamma$ và $\theta$ tối ưu theo Lloyd algorithm).
+**Bước 1 — Aesthetic Comparator:** Huấn luyện mạng Siamese (ResNet-50 làm backbone, thêm 4 local residual blocks res5-1 đến res5-4 song song với res5 gốc để khai thác đặc trưng cục bộ) kết hợp với ternary classifier để ước lượng tỉ lệ điểm thẩm mỹ giữa hai ảnh (quantize thành 3 lớp: superior/similar/inferior dùng ngưỡng $`\gamma`$ và $`\theta`$ tối ưu theo Lloyd algorithm).
 
-**Bước 2 — Pairwise comparison matrix + Eigenvalue decomposition:** Dùng $R$ reference images (có điểm đã biết) để xây dựng ma trận so sánh cặp $\mathbf{A}$ (kích thước $(R+1)\times(R+1)$), sau đó giải bài toán trị riêng $\mathbf{A}\mathbf{u} = \lambda\mathbf{u}$ lấy principal eigenvector, nhân với hệ số scale $\kappa^*$ tối ưu hóa theo least squares để ra điểm thẩm mỹ.
+**Bước 2 — Pairwise comparison matrix + Eigenvalue decomposition:** Dùng $`R`$ reference images (có điểm đã biết) để xây dựng ma trận so sánh cặp $`\mathbf{A}`$ (kích thước $`(R+1)\times(R+1)`$), sau đó giải bài toán trị riêng $`\mathbf{A}\mathbf{u} = \lambda\mathbf{u}`$ lấy principal eigenvector, nhân với hệ số scale $`\kappa^*`$ tối ưu hóa theo least squares để ra điểm thẩm mỹ.
 
 **Biến thể theo nhiệm vụ:**
-- *Score regression:* reference images phân bố đều trên toàn thang điểm ($R = 110$ trên AVA).
-- *Binary classification:* reference images tập trung ở vùng điểm median ($R = 30$).
-- *Personalized:* kết hợp generic reference images ($R_g$) và personal reference images ($R_p$) trong cùng một ma trận $\mathbf{A}$ mở rộng.
+- *Score regression:* reference images phân bố đều trên toàn thang điểm ($`R = 110`$ trên AVA).
+- *Binary classification:* reference images tập trung ở vùng điểm median ($`R = 30`$).
+- *Personalized:* kết hợp generic reference images ($`R_g`$) và personal reference images ($`R_p`$) trong cùng một ma trận $`\mathbf{A}`$ mở rộng.
 
 ---
 
@@ -65,9 +65,9 @@ Trước bài báo này, ba nhánh trên thường được xử lý bởi các 
 | **AADB** [18] | Generic score regression        | 10,000 ảnh; 8,500 train / 500 val / 1,000 test; 11 attribute scores |
 | **FLICKER-AES** [34] | Personalized regression  | 40,000 ảnh; 35,263 train / 4,737 test; 210 workers |
 
-### Score Regression (Spearman's $\rho$ / MASD)
+### Score Regression (Spearman's $`\rho`$ / MASD)
 
-| Phương pháp | AVA $\rho$↑ | AVA MASD↓ | AADB $\rho$↑ | AADB MASD↓ |
+| Phương pháp | AVA $`\rho`$↑ | AVA MASD↓ | AADB $`\rho`$↑ | AADB MASD↓ |
 |-------------|--------|-----------|---------|------------|
 | Reg-Net [18] | 0.558 | 0.0582 | 0.678 | 0.1268 |
 | PAC-Net [17] | 0.871 | — | 0.837 | — |
@@ -82,14 +82,14 @@ Trước bài báo này, ba nhánh trên thường được xử lý bởi các 
 
 (Tăng +9.0% so với state-of-the-art trước đó; không dùng external information như attribute/saliency.)
 
-### Personalized Regression (Spearman's $\rho$, FLICKER-AES)
+### Personalized Regression (Spearman's $`\rho`$, FLICKER-AES)
 
-| Phương pháp | Generic | $+R_p=10$ | $+R_p=100$ |
+| Phương pháp | Generic | $`+R_p=10`$ | $`+R_p=100`$ |
 |-------------|---------|--------|---------|
 | PAM [34]    | 0.514   | +0.006 | +0.039  |
 | **Proposed** | **0.668** | **+0.040** | **+0.044** |
 
-(Generic $\rho$ cao hơn PAM đáng kể; personalization cải thiện thêm +0.040 chỉ với 10 personal reference images.)
+(Generic $`\rho`$ cao hơn PAM đáng kể; personalization cải thiện thêm +0.040 chỉ với 10 personal reference images.)
 
 ---
 
