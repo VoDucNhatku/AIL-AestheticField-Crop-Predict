@@ -187,27 +187,21 @@ I_init (RGB)
                               L_total = L_comp + λ₁L_extra + λ₂L_aes + λ₃L_depth
 ```
 
-### 2.4. 3 Contributions
+### 2.4. 3 Đóng góp dự kiến (Expected Contributions)
 
-**C1: Gaussian-Splatting-Inspired Feature Extrapolation (GS-FEM)**
+Đây là những điểm mới (novelties) cốt lõi của bài báo, được thiết kế để nâng cấp mô hình lên chuẩn tạp chí Q1 (IEEE TIP):
 
-Thay FEM đơn giản (6 blocks + 1 token) bằng Gaussian token representation:
-- Mỗi visible patch → 1 Gaussian với μ, Σ, α, f
-- Extrapolation = "splat" Gaussian ra vùng ngoài border
-- **Novelty:** Lần đầu Gaussian splatting concept dùng cho feature extrapolation trong image composition
+**C1: Ngoại suy đặc trưng bằng Gaussian Splatting (GS-FEM)**
+- **Ý tưởng:** Thay thế module ngoại suy FEM cũ (chỉ đoán mù bằng 1 token) bằng không gian hạt Gaussian. Mỗi vùng ảnh nhìn thấy (visible patch) sẽ được biểu diễn thành 1 hạt Gaussian có vị trí (μ) và độ lan tỏa (Σ). Việc mở rộng ảnh (extrapolation) chính là "bắn" (splatting) các hạt này ra vùng ngoài biên.
+- **Điểm mới (Novelty):** Lần đầu tiên mang khái niệm Gaussian Splatting (vốn dùng cho rendering 3D) ứng dụng vào việc ngoại suy đặc trưng (feature extrapolation) để phục vụ bài toán 2D image composition.
 
-**C2: Aesthetic Feature Distillation into Gaussian Field**
+**C2: Chưng cất đặc trưng thẩm mỹ vào không gian Gaussian (Aesthetic Distillation)**
+- **Ý tưởng:** Nếu chỉ bắn hạt Gaussian ra ngoài biên thì mô hình sẽ không biết vùng nào là "đẹp" để cắt. Ta sẽ chưng cất (distill) tri thức từ mạng đánh giá thẩm mỹ VEN vào các hạt Gaussian. Từ đó, mỗi hạt Gaussian sẽ mang theo một "điểm số thẩm mỹ" (aesthetic saliency).
+- **Điểm mới (Novelty):** Kết hợp thành công kỹ thuật feature distillation phong cách 3DGS vào trong một kiến trúc 2D image composition, tạo ra một trường đặc trưng thẩm mỹ (Aesthetic Feature Field).
 
-- Distill aesthetic knowledge từ VEN (pretrained) vào Gaussian field
-- Mỗi Gaussian chứa aesthetic saliency
-- **Novelty:** Kết hợp 3DGS-style feature distillation với 2D image composition
-
-**C3: Depth-Enhanced Gaussian với Dual-Mode**
-
-- Depth Anything Small → initialize Σ_i
-- Foreground (depth nhỏ) → Σ hẹp; Background (depth lớn) → Σ rộng
-- Lightweight mode: MiDaS Small (7.5M params) + token pruning + model distillation
-- **Novelty:** Depth-guided Gaussian initialization + dual-mode deployment
+**C3: Gaussian tăng cường chiều sâu với chế độ kép (Depth-Enhanced Gaussian)**
+- **Ý tưởng:** Dùng mô hình ước lượng chiều sâu (Depth Anything Small) để cung cấp giá trị khởi tạo cho kích thước (Σ) của các hạt Gaussian. Logic vật lý rất rõ ràng: Tiền cảnh (Foreground - gần) thì hạt nhỏ và sắc nét, Hậu cảnh (Background - xa) thì hạt to và mờ. 
+- **Điểm mới (Novelty):** Khởi tạo Gaussian có định hướng chiều sâu (Depth-guided initialization), giúp mô hình có ý nghĩa vật lý thực tế và hội tụ nhanh hơn. Hỗ trợ thêm chế độ siêu nhẹ (Lightweight mode) dùng MiDaS Small (7.5M params) để chạy trên thiết bị yếu.
 
 ### 2.5. Loss function
 
