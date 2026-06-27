@@ -64,7 +64,7 @@ flowchart LR
 - **Input:** Ảnh đơn $I_i$ (well-composed) + quỹ đạo di chuyển camera (camera motion trajectory) — có thể là ngẫu nhiên.
 - **Operation:** Sử dụng **ViewCrafter** [50] để tái tạo đám mây điểm (point cloud) từ ảnh đơn, sau đó render các khung hình tương ứng với quỹ đạo camera. Phần thiếu được lấp đầy bằng **Diffusion Inpainting**. Quá trình sinh video từ frame 1 đến frame N biểu diễn chuyển động từ well-composed sang less-favorable perspective:
 
-  $$V_{\text{gen}} = \text{ViewCrafter}(I_i, \tau_{\text{cam}})$$
+V_{\text{gen}} = \text{ViewCrafter}(I_i, \tau_{\text{cam}})$$
 
   trong đó $\tau_{\text{cam}}$ là quỹ đạo camera (có thể chọn ngẫu nhiên).
 
@@ -77,7 +77,7 @@ flowchart LR
 - **Input:** Video $V_{\text{gen}} = \{F_1, \ldots, F_N\}$ (well-composed → less-favorable).
 - **Operation:** Đảo thứ tự các khung hình:
 
-  $$V_{\text{train}} = \text{Reverse}(V_{\text{gen}}) = \{F_N, F_{N-1}, \ldots, F_1\}$$
+V_{\text{train}} = \text{Reverse}(V_{\text{gen}}) = \{F_N, F_{N-1}, \ldots, F_1\}$$
 
   Sau khi đảo, video chuyển từ less-favorable sang well-composed, đúng với dạng dữ liệu huấn luyện mong muốn cho PPC.
 
@@ -113,7 +113,7 @@ flowchart LR
 - **Input:** Ảnh đầu vào $s$ (góc nhìn kém thẩm mỹ — less favorable perspective).
 - **Operation:** Mô hình image-to-video (I2V) $f(\theta)$ nhận ảnh $s$ và sinh ra video biến đổi góc nhìn. Các backbone được thử nghiệm gồm CogVideoX 1.5 (5B), HunYuan I2V (17B), và Wan2.1 (14B). Quá trình này mô hình hóa phân phối có điều kiện:
 
-  $$v \sim p_\theta(v \mid s)$$
+v \sim p_\theta(v \mid s)$$
 
   trong đó $v$ là video output và $s$ là ảnh điều kiện (conditioning image).
 
@@ -129,7 +129,7 @@ flowchart LR
   2. Dùng **feature matching** để chiếu guidance box từ frame cuối sang ảnh gốc $s$, tạo ra hộp bị biến dạng (distorted box).
   3. Khi người dùng di chuyển camera, hộp biến dạng dần tiến về hình chữ nhật khi đạt góc nhìn tốt. Dùng **homography transformation** (biến đổi đồng hình) để đơn giản hóa:
 
-  $$\mathbf{H} = \arg\min_H \sum_i \| \mathbf{x}_i' - H\mathbf{x}_i \|^2$$
+\mathbf{H} = \arg\min_H \sum_i \| \mathbf{x}_i' - H\mathbf{x}_i \|^2$$
 
   trong đó $\mathbf{x}_i$ là các điểm tương ứng giữa ảnh gốc và frame cuối.
 
@@ -142,17 +142,17 @@ flowchart LR
 - **Input:** Dataset $\mathcal{D} = \{s, v_h, v_l\}$ — mỗi mẫu gồm prompt ảnh $s$, video chất lượng cao $v_h$ (win), và video chất lượng thấp $v_l$ (lose), được tạo bởi reference model $p_{\text{ref}}$.
 - **Operation:** Mục tiêu RLHF là học phân phối $p_\theta(v \mid s)$ tối đa hóa reward $r(v, s)$ (từ PQA) trong khi kiểm soát KL-divergence so với $p_{\text{ref}}$ qua hệ số $\beta$:
 
-  $$\max_{p_\theta} \mathbb{E}_{s \sim \mathcal{D},\, v \sim p_\theta(v|s)} \left[ r(v, s) \right] - \beta \, \mathbb{D}_{\text{KL}} \left[ p_\theta(v \mid s) \,\|\, p_{\text{ref}}(v \mid s) \right]$$
+\max_{p_\theta} \mathbb{E}_{s \sim \mathcal{D},\, v \sim p_\theta(v|s)} \left[ r(v, s) \right] - \beta \, \mathbb{D}_{\text{KL}} \left[ p_\theta(v \mid s) \,\|\, p_{\text{ref}}(v \mid s) \right]$$
 
   *(phương trình 1 trong paper)*
 
   Trong Rectified Flow, véc-tơ nhiễu $\xi^*$ liên hệ với trường vận tốc (velocity field) $\nu^*$, trong đó:
 
-  $$\| \xi^* - \xi_{\text{pred}}(\nu_t^*, t) \|^2 = (1-t)^2 \| \nu^* - \nu_{\text{pred}}(\nu_t^*, t) \|^2$$
+\| \xi^* - \xi_{\text{pred}}(\nu_t^*, t) \|^2 = (1-t)^2 \| \nu^* - \nu_{\text{pred}}(\nu_t^*, t) \|^2$$
 
   với $\xi_{\text{pred}}$ và $\nu_{\text{pred}}$ là dự đoán từ mô hình $p_\theta$ hoặc reference model $p_{\text{ref}}$. Từ quan hệ này, **Flow-DPO loss** $\mathcal{L}_{\text{FD}}(\theta)$ được rút ra:
 
-  $$\mathcal{L}_{\text{FD}}(\theta) = -\mathbb{E}\!\left[\log \sigma\!\left(-\frac{\beta_t}{2}\Bigl(\bigl(\|\nu^h - \nu_\theta(\nu_t^h, t)\|^2 - \|\nu^h - \nu_{\text{ref}}(\nu_t^h, t)\|^2\bigr) - \bigl(\|\nu^l - \nu_\theta(\nu_t^l, t)\|^2 - \|\nu^l - \nu_{\text{ref}}(\nu_t^l, t)\|^2\bigr)\Bigr)\right)\right]$$
+\mathcal{L}_{\text{FD}}(\theta) = -\mathbb{E}\!\left[\log \sigma\!\left(-\frac{\beta_t}{2}\Bigl(\bigl(\|\nu^h - \nu_\theta(\nu_t^h, t)\|^2 - \|\nu^h - \nu_{\text{ref}}(\nu_t^h, t)\|^2\bigr) - \bigl(\|\nu^l - \nu_\theta(\nu_t^l, t)\|^2 - \|\nu^l - \nu_{\text{ref}}(\nu_t^l, t)\|^2\bigr)\Bigr)\right)\right]$$
 
   *(phương trình 2 trong paper)*
 
@@ -171,9 +171,9 @@ flowchart LR
 - **Input:** ~5K video biến đổi góc nhìn được sinh bởi 3D reconstruction; chú thích thủ công xác định ~1.5K mẫu chất lượng cao và ~3.5K mẫu chất lượng thấp. Ghép ngẫu nhiên mỗi mẫu chất lượng cao với 10 mẫu thấp → **15K cặp unpaired**.
 - **Operation:** Fine-tune **Qwen2-VL-2B** với **Bradley-Terry model with ties (BTT) loss** [51]. BTT mở rộng Bradley-Terry truyền thống để xử lý trường hợp hòa (tie). Với một cặp video $(v_i, v_j)$:
 
-  $$P(v_i \succ v_j) = \frac{e^{r(v_i)}}{e^{r(v_i)} + e^{r(v_j)}}$$
+P(v_i \succ v_j) = \frac{e^{r(v_i)}}{e^{r(v_i)} + e^{r(v_j)}}$$
 
-  $$P(v_i \sim v_j) = \frac{\delta}{e^{r(v_i)} + \delta + e^{r(v_j)}}$$
+P(v_i \sim v_j) = \frac{\delta}{e^{r(v_i)} + \delta + e^{r(v_j)}}$$
 
   trong đó $r(\cdot)$ là reward score và $\delta$ là tham số tie. BTT loss tối thiểu hóa negative log-likelihood trên toàn bộ tập cặp. Token đặc biệt (special tokens) được tách riêng cho VQ (context-agnostic) và CA (composition-aware) để decoupling đặc trưng qua causal attention.
 
@@ -186,7 +186,7 @@ flowchart LR
 - **Input:** Các cặp video được sinh từ CogVideoX 1.5, Wan2.1, và GT (ground truth) với cùng ảnh đầu vào. Chú thích chuyên gia theo 3 chiều: VQ, MQ, CA. Mỗi chiều chọn *A wins / Ties / B wins*.
 - **Operation:** Tiếp tục fine-tune model từ Stage C1 với BTT loss trên tập paired. Điểm reward cho từng chiều được dự đoán qua **shared linear projection head** áp dụng lên token representation từ layer cuối:
 
-  $$r_d(v) = \mathbf{w}_d^\top \phi_d(v), \quad d \in \{\text{VQ},\ \text{MQ},\ \text{CA}\}$$
+r_d(v) = \mathbf{w}_d^\top \phi_d(v), \quad d \in \{\text{VQ},\ \text{MQ},\ \text{CA}\}$$
 
   trong đó $\phi_d(v)$ là biểu diễn token tương ứng chiều $d$ từ Qwen2-VL-2B, và $\mathbf{w}_d$ là trọng số projection. Metric CA đặc biệt đánh giá **cải thiện bố cục xuyên suốt video** (compositional improvement throughout the video transformation) — không phải chất lượng từng frame tĩnh.
 

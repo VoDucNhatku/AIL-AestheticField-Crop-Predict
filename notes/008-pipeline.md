@@ -78,7 +78,7 @@ $$\hat{\mathbf{F}}_{pred} \longrightarrow \mathbf{F}_{pred} \in \mathbb{R}^{14 \
 - **Input:** $\mathbf{F}_{pred}$ (dự đoán) và $\mathbf{F}_{gt}$ (ground-truth từ teacher VEN tại layer $23^{\text{rd}}$, kích thước $14 \times 14 \times 512$).
 - **Operation:** Hàm mục tiêu huấn luyện là MSE loss trên rendered feature maps:
 
-$$\mathcal{L}_{\text{distill}} = \left\| \mathbf{F}_{pred} - \mathbf{F}_{gt} \right\|_2^2$$
+$$\mathcal{L}_{\text{distill}} = \|\mathbf{F}_{pred} - \mathbf{F}_{gt}\|_2^2$$
 
 Trong đó $\mathbf{F}_{gt}$ thu được bằng cách đưa ảnh ground-truth qua teacher VEN (frozen). Chỉ Aesthetic DPT Head và Transformer Downsampler được cập nhật; tất cả modules còn lại frozen.
 

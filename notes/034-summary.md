@@ -75,7 +75,7 @@ Khớp nhãn dùng bipartite matching. Chiến lược nhãn mềm (soft label):
 **3.3 Mô-đun ngoại suy đặc trưng (FEM).** FEM gồm 6 transformer block, nhận $\mathcal{Z}_{vis}$ qua cross-attention để dự đoán $\mathcal{Z}_{pad}$ (token ngoài biên). Giám sát FEM: trích xuất ảnh toàn cảnh $\mathbf{I}$ (lớn hơn $\mathbf{I}_{init}$) qua CNN/encoder với EMA để lấy $\mathcal{Z}_{out}$ (token thực ngoài biên), sau đó tối thiểu hóa:
 
 $$
-\mathcal{L}_\mathrm{extra} = \mathrm{smooth\text{-}}\ell_1(\mathcal{Z}_{pad}, sg(\mathcal{Z}_{out}))
+\mathcal{L}_{\mathrm{extra}} = \text{smooth-}\ell_1(\mathcal{Z}_{pad}, sg(\mathcal{Z}_{out}))
 $$
 
 *(phương trình 6, $sg(\cdot)$ là stop gradient)*

@@ -103,7 +103,7 @@ $$\mathcal{L} = \mathcal{L}_{comp} + \mathcal{L}_{extra}$$
 - $I$ được đưa qua CNN (EMA) và Encoder (EMA) để tạo ra đặc trưng toàn cảnh $\mathcal{Z}$.
 - $\mathcal{Z}$ chia thành $\mathcal{Z}_{in}$ (tương ứng với $I_{init}$) và $\mathcal{Z}_{out}$ (tương ứng với vùng bên ngoài).
 - $\mathcal{Z}_{out}$ được dùng làm Ground Truth để giám sát kết quả của FEM ($\mathcal{Z}_{pad}$) thông qua **smooth-$L_1$ loss**:
-  $$\mathcal{L}_{extra} = smooth\text{-}L_1(\mathcal{Z}_{pad}, sg(\mathcal{Z}_{out}))$$
+\mathcal{L}_{extra} = \text{smooth-}L_1(\mathcal{Z}_{pad}, sg(\mathcal{Z}_{out}))$$
 *(với $sg()$ là stop gradient).*
 
 ## 4. Multi-step Adjustment (Điều chỉnh đa bước)
