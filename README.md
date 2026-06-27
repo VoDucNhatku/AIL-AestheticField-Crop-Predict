@@ -135,6 +135,24 @@ UNIC/
 
 **Yêu cầu:** PyTorch 1.13.1+cu117, GAICD dataset (Google Drive), pretrained checkpoint.
 
+### 1.10. Kết quả Inference Thực tế
+
+Dưới đây là một số hình ảnh test thử nghiệm chạy qua baseline UNIC (Bài 034) đã được train:
+
+**1. Inference tùy chỉnh trên 1 ảnh (Custom Inference)**
+Code để sinh ảnh này nằm ở: [`modal_infer.py`](modal_infer.py)
+
+| Ảnh gốc (`test.jpg`) | Hộp dự đoán (`test_predicted_box.jpg`) | Ảnh cắt (`test_predicted_crop.jpg`) |
+|----------------------|----------------------------------------|-------------------------------------|
+| ![Original](assets/images/test.jpg) | ![Box](assets/images/test_predicted_box.jpg) | ![Crop](assets/images/test_predicted_crop.jpg) |
+
+**2. Đánh giá Test Dataset (GAICD Test set)**
+Code để sinh bộ ảnh này nằm ở: [`modal_apps/034-run-results/modal_app.py`](modal_apps/034-run-results/modal_app.py)
+
+| Ảnh đầu vào (`215046_input.jpg`) | Ground Truth Bounding Box (`215046_gt_pre_best_out.jpg`) | Ảnh Cắt Thực tế (`215046_crop_out.jpg`) |
+|----------------------------------|----------------------------------------------------------|-----------------------------------------|
+| ![Input](assets/images/215046_input.jpg) | ![GT](assets/images/215046_gt_pre_best_out.jpg) | ![Crop](assets/images/215046_crop_out.jpg) |
+
 ---
 
 ## Phần 2 — Đề xuất nghiên cứu: Gaussian AFF
