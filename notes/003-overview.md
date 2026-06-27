@@ -15,7 +15,7 @@ affiliation: "Stevens Institute of Technology"
 
 Bài báo giải quyết bài toán **viewpoint learning** (học mẫu góc nhìn): cho trước một môi trường trong nhà dạng 3D point cloud, hệ thống phải học và dự đoán các vị trí và hướng máy ảnh **6DoF** (6 bậc tự do) phù hợp — tức là những góc nhìn mà con người thực sự hay chụp ảnh tại đó — và tổng quát hóa mẫu này sang các môi trường mới chưa thấy trong quá trình huấn luyện.
 
-Bài toán được hình thức hóa là: học phân phối có điều kiện $D(\mathbf{T} \mid \Pi)$, trong đó $\mathbf{T} \in SE(3)$ là tư thế máy ảnh 6DoF và $\Pi$ là mô hình 3D của cảnh. Tại suy luận (inference), với một cảnh $\Pi'$ mới, hệ thống phải phân biệt góc nhìn "tốt" (inlier — khớp phân phối $D$) với góc nhìn ngẫu nhiên (outlier — lấy mẫu đồng đều từ $U(\mathbf{T}')$).
+Bài toán được hình thức hóa là: học phân phối có điều kiện $`D(\mathbf{T} \mid \Pi)`$, trong đó $`\mathbf{T} \in SE(3)`$ là tư thế máy ảnh 6DoF và $`\Pi`$ là mô hình 3D của cảnh. Tại suy luận (inference), với một cảnh $`\Pi'`$ mới, hệ thống phải phân biệt góc nhìn "tốt" (inlier — khớp phân phối $`D`$) với góc nhìn ngẫu nhiên (outlier — lấy mẫu đồng đều từ $`U(\mathbf{T}')`$).
 
 ---
 
@@ -39,7 +39,7 @@ Bài báo liệt kê bốn đóng góp kỹ thuật:
 
 2. **Harmonics Ray Encoders (HREs):** Bộ mã hóa ray mới kết hợp point cloud learning với encoding hình cầu (spherical harmonics), tạo ra **trường đặc trưng hình cầu** (spherical feature fields) mã hóa thông tin môi trường phụ thuộc vào hướng nhìn (view-dependent).
 
-3. **Hyper-Rays — biểu diễn ray 6DoF bijective:** Nâng chiều viewing ray lên 6D (từ 5DoF optic-ray lên 6D hyper-ray trong $\mathbb{L}^6 = \{\hat{\mathbf{o}} \in \mathbb{R}^3, \mathbf{q} \in \mathbb{S}^3\}$) bằng cách bổ sung quaternion $\mathbf{q}$ để mã hóa roll-axis. Mỗi hyper-ray tương ứng **duy nhất** với một tư thế SE(3) — loại bỏ hoàn toàn sự mập mờ.
+3. **Hyper-Rays — biểu diễn ray 6DoF bijective:** Nâng chiều viewing ray lên 6D (từ 5DoF optic-ray lên 6D hyper-ray trong $`\mathbb{L}^6 = \{\hat{\mathbf{o}} \in \mathbb{R}^3, \mathbf{q} \in \mathbb{S}^3\}`$) bằng cách bổ sung quaternion $`\mathbf{q}`$ để mã hóa roll-axis. Mỗi hyper-ray tương ứng **duy nhất** với một tư thế SE(3) — loại bỏ hoàn toàn sự mập mờ.
 
 4. **Inference workflow phân tầng hiệu quả:** Tách rời (decouple) dự đoán vị trí (location) và hướng nhìn (orientation) thành hai giai đoạn — location branch dùng optic-rays, viewpoint branch dùng hyper-rays — cho phép lấy mẫu và phân tích 6DoF viewpoint dày đặc trong ~10 giây trên GPU thông thường.
 
@@ -51,9 +51,9 @@ Hệ thống gồm ba thành phần chính nối tiếp nhau:
 
 **Bước 1 — Map Processing Branch:** Đầu vào là 3D point cloud. PointNet xử lý để tạo ra **per-point HRE coefficients** — các hệ số định nghĩa trường đặc trưng hình cầu cho mỗi điểm trong point cloud.
 
-**Bước 2 — Location Branch (optic-rays):** Với mỗi vị trí ứng viên $\mathbf{t}$, tổng hợp tất cả optic-rays từ $\mathbf{t}$ đến các điểm point cloud, mã hóa qua HRE (length feature field + directional feature field trên $\mathbb{S}^2$), aggregate qua spherical Voronoi pooling → ra điểm vị trí $S_{loc}(\mathbf{t}) \in [0, 1]$.
+**Bước 2 — Location Branch (optic-rays):** Với mỗi vị trí ứng viên $`\mathbf{t}`$, tổng hợp tất cả optic-rays từ $`\mathbf{t}`$ đến các điểm point cloud, mã hóa qua HRE (length feature field + directional feature field trên $`\mathbb{S}^2`$), aggregate qua spherical Voronoi pooling → ra điểm vị trí $`S_{loc}(\mathbf{t}) \in [0, 1]`$.
 
-**Bước 3 — Viewpoint Branch (hyper-rays):** Với các vị trí $\mathbf{t}$ đã qua ngưỡng lọc, với mỗi tư thế $(\mathbf{R}, \mathbf{t})$, tổng hợp hyper-rays tương ứng, mã hóa qua HRE (directional feature field trên $\mathbb{S}^3$), aggregate qua Voronoi 3-sphere pooling + view cropping theo FoV → ra điểm viewpoint $S_{view}(\mathbf{R}, \mathbf{t})$. Điểm cuối $S_{final}(\mathbf{R}, \mathbf{t}) = S_{loc}(\mathbf{t}) \times S_{view}(\mathbf{R}, \mathbf{t})$.
+**Bước 3 — Viewpoint Branch (hyper-rays):** Với các vị trí $`\mathbf{t}`$ đã qua ngưỡng lọc, với mỗi tư thế $`(\mathbf{R}, \mathbf{t})`$, tổng hợp hyper-rays tương ứng, mã hóa qua HRE (directional feature field trên $`\mathbb{S}^3`$), aggregate qua Voronoi 3-sphere pooling + view cropping theo FoV → ra điểm viewpoint $`S_{view}(\mathbf{R}, \mathbf{t})`$. Điểm cuối $`S_{final}(\mathbf{R}, \mathbf{t}) = S_{loc}(\mathbf{t}) \times S_{view}(\mathbf{R}, \mathbf{t})`$.
 
 Toàn bộ pipeline chỉ nhận point cloud làm đầu vào, không render ảnh trong quá trình inference.
 
@@ -75,7 +75,7 @@ Toàn bộ pipeline chỉ nhận point cloud làm đầu vào, không render ả
 
 Phương pháp đạt kết quả tốt nhất trên tất cả các metrics, đặc biệt nổi bật ở View AP (55.08 so với các baseline không đạt được con số đáng kể) — chứng tỏ khả năng dự đoán hướng nhìn 6DoF đầy đủ, điều mà các phương pháp cũ cơ bản không làm được.
 
-**Ablation study (Table 2):** Tắt $\mathbb{S}^3$ direction encoding (tức là degradate về optic-rays) làm View AP giảm mạnh từ 52.79 xuống 29.58 — xác nhận tầm quan trọng thiết yếu của hyper-rays trong dự đoán orientation.
+**Ablation study (Table 2):** Tắt $`\mathbb{S}^3`$ direction encoding (tức là degradate về optic-rays) làm View AP giảm mạnh từ 52.79 xuống 29.58 — xác nhận tầm quan trọng thiết yếu của hyper-rays trong dự đoán orientation.
 
 **Tốc độ inference:** ~10 giây để lấy mẫu toàn bộ 6DoF viewpoints trong một cảnh ScanNet với sampling grid 0.2m và 4096 orientations trên GTX1080Ti — nhanh hơn đáng kể so với các phương pháp dựa trên render.
 
@@ -162,7 +162,7 @@ Phương pháp đạt kết quả tốt nhất trên tất cả các metrics, đ
 | Outlier viewpoint | Góc nhìn outlier | Viewpoint ngẫu nhiên không khớp phân phối (viewpoint không tốt) |
 | DoF deficiency | Thiếu hụt bậc tự do | Vấn đề 5DoF optic-ray không đủ để mô tả duy nhất tư thế 6DoF |
 | Roll-axis | Trục roll | Bậc tự do thứ 6 của camera — góc xoay quanh trục quang học |
-| Quaternion | Số tứ nguyên | Biểu diễn toán học cho phép quay 3D, tránh gimbal lock; $\mathbf{q} \in \mathbb{S}^3$ |
+| Quaternion | Số tứ nguyên | Biểu diễn toán học cho phép quay 3D, tránh gimbal lock; $`\mathbf{q} \in \mathbb{S}^3`$ |
 | FoV (Field of View) | Trường nhìn | Góc quan sát của camera theo chiều ngang và dọc |
 | ScanNet | ScanNet | Dataset cảnh trong nhà với 1513 scans RGB-D từ 707 cảnh khác nhau |
 | AP (Average Precision) | Độ chính xác trung bình | Metric tổng hợp precision-recall curve |

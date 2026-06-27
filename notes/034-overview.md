@@ -44,7 +44,7 @@ Bài báo có 3 đóng góp chính:
 
 - **Datasets:** Đánh giá trên bộ dữ liệu GAICD và FLMS được điều chỉnh lại cho bài toán unbounded.
 - **Metric:** Sử dụng Acc1/5, Acc1/10 (độ chính xác chọn top crop), IoU, và Boundary Displacement (Disp).
-- **Kết quả (Quantitative):** UNIC vượt trội so với các phương pháp trước đây (bao gồm các phương pháp anchor evaluation như GAIC, CGS và regression như CACNet). Ví dụ trên tập GAICD, Acc1/5 (với $\epsilon = 0.85$) đạt 59.0%, vượt xa các mô hình khác (Jia et al. đạt 48.0%, CACNet đạt 49.1%).
+- **Kết quả (Quantitative):** UNIC vượt trội so với các phương pháp trước đây (bao gồm các phương pháp anchor evaluation như GAIC, CGS và regression như CACNet). Ví dụ trên tập GAICD, Acc1/5 (với $`\epsilon = 0.85`$) đạt 59.0%, vượt xa các mô hình khác (Jia et al. đạt 48.0%, CACNet đạt 49.1%).
 - **Ablation Study:** Khẳng định việc ngoại suy trong không gian đặc trưng (Feature Extrapolation) mang lại hiệu quả tốt hơn so với không ngoại suy hoặc ngoại suy trên không gian ảnh pixel (Image Extrapolation / Out-painting).
 
 ## 6. Đánh giá: Có nên đọc kỹ không? Phù hợp cho ai?

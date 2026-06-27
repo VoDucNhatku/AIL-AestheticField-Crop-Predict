@@ -51,7 +51,7 @@
 
 **Dependencies:** PyTorch + scipy + numpy — không cần gì exotic
 
-**Rủi ro chính:** Modified Lloyd algorithm — paper mô tả ngắn, dễ implement sai ràng buộc $r_{ij} \times r_{ji} = 1$
+**Rủi ro chính:** Modified Lloyd algorithm — paper mô tả ngắn, dễ implement sai ràng buộc $`r_{ij} \times r_{ji} = 1`$
 
 **Kết luận:** **Reproduce được trong 1–2 tuần.** Dataset public, kiến trúc rõ ràng, không cần GPU mạnh.
 
